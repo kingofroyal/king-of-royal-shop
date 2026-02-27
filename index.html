@@ -34,6 +34,26 @@
         .shop-item .price{color:#00ff88; font-size:1.2em}
         .owner-float{position:fixed; bottom:30px; left:30px; width:70px; height:70px; background:linear-gradient(45deg,#ffd700,#ffaa00); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2em; cursor:pointer; box-shadow:0 0 30px #ffd700; z-index:9999; animation:float 3s infinite}
         @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+        
+        /* Owner Panel Styles */
+        .owner-panel{background:linear-gradient(135deg,#1a1a4a,#0f0f2f); border:2px solid #ffd700; border-radius:30px; padding:30px; margin-top:30px; display:none}
+        .owner-panel h2{color:#ffd700; margin-bottom:20px}
+        .owner-tabs{display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap}
+        .owner-tab{padding:10px 20px; background:#0a0a1a; border:1px solid #ffd700; border-radius:30px; cursor:pointer}
+        .owner-tab.active{background:#ffd700; color:black}
+        .owner-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px}
+        .owner-card{background:#0a0a1a; border-radius:20px; padding:20px; border:1px solid #ffd700}
+        .owner-card h3{color:#ffd700; margin-bottom:15px}
+        .item-list{max-height:300px; overflow-y:auto}
+        .item-row{display:flex; justify-content:space-between; align-items:center; padding:10px; background:#1a1a4a; margin-bottom:5px; border-radius:8px}
+        .item-actions{display:flex; gap:5px}
+        .edit-btn{background:#00d4ff; color:white; padding:5px 10px; border:none; border-radius:5px; cursor:pointer}
+        .delete-btn{background:#ff4444; color:white; padding:5px 10px; border:none; border-radius:5px; cursor:pointer}
+        
+        .modal{display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); z-index:10000; justify-content:center; align-items:center}
+        .modal-content{max-width:500px; width:90%; background:#1a1a4a; border-radius:30px; padding:30px; border:2px solid #ffd700}
+        .modal-header{color:#ffd700; font-size:1.8em; margin-bottom:20px}
+        
         @media(max-width:768px){h1{font-size:2.5em}.nav{flex-direction:column}.nav-item{width:100%; text-align:center}}
     </style>
 </head>
@@ -75,6 +95,72 @@
             <div class="nav-item" onclick="showPage('tutorials')">فیرکاری</div>
             <div class="nav-item" onclick="showPage('balance')">گواستنەوە</div>
             <div class="nav-item" onclick="showPage('code')">کۆد</div>
+        </div>
+
+        <!-- Owner Panel -->
+        <div class="owner-panel" id="ownerPanel">
+            <h2><i class="fas fa-crown"></i> پانێلی خاوەن</h2>
+            <div class="owner-tabs">
+                <div class="owner-tab active" onclick="switchOwnerTab('items')">📦 بەڕێوەبردنی کەلوپەل</div>
+                <div class="owner-tab" onclick="switchOwnerTab('codes')">🔑 بەڕێوەبردنی کۆد</div>
+                <div class="owner-tab" onclick="switchOwnerTab('users')">👥 بەکارهێنەران</div>
+            </div>
+
+            <div id="ownerItemsTab">
+                <button class="btn" style="margin-bottom:20px; width:auto; padding:10px 20px" onclick="showAddItemModal()">➕ زیادکردنی کەلوپەل</button>
+                <div class="owner-grid">
+                    <div class="owner-card">
+                        <h3>🚗 سەیارەکان</h3>
+                        <div class="item-list" id="carsList"></div>
+                    </div>
+                    <div class="owner-card">
+                        <h3>🏠 خانووەکان</h3>
+                        <div class="item-list" id="housesList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ownerCodesTab" style="display:none">
+                <div class="owner-card">
+                    <h3>➕ زیادکردنی کۆدی نوێ</h3>
+                    <input type="text" id="newCode" placeholder="کۆد" style="margin-bottom:10px">
+                    <input type="number" id="codeValue" placeholder="بڕی KOR" style="margin-bottom:10px">
+                    <button onclick="addNewCode()" style="background:#00ff88; color:black">زیادکردن</button>
+                </div>
+                <div class="owner-card" style="margin-top:20px">
+                    <h3>📋 کۆدەکان</h3>
+                    <div class="item-list" id="codesList"></div>
+                </div>
+            </div>
+
+            <div id="ownerUsersTab" style="display:none">
+                <div class="owner-card">
+                    <h3>👥 لیستی بەکارهێنەران</h3>
+                    <div class="item-list" id="usersList"></div>
+                </div>
+                <div class="owner-card" style="margin-top:20px">
+                    <h3>💰 دابەشکردنی KOR</h3>
+                    <input type="text" id="giveUser" placeholder="ناوی بەکارهێنەر" style="margin-bottom:10px">
+                    <input type="number" id="giveAmount" placeholder="بڕی KOR" style="margin-bottom:10px">
+                    <button onclick="giveCoins()" style="background:#00ff88; color:black">دابەشکردن</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Item Modal -->
+        <div class="modal" id="itemModal">
+            <div class="modal-content">
+                <div class="modal-header">➕ زیادکردنی کەلوپەل</div>
+                <select id="itemType" style="width:100%; padding:15px; margin-bottom:20px; background:#0a0a1a; color:white; border:2px solid #ffd700; border-radius:15px">
+                    <option value="cars">سەیارە</option>
+                    <option value="houses">خانوو</option>
+                </select>
+                <input type="text" id="itemName" placeholder="ناوی کەلوپەل" style="margin-bottom:20px">
+                <input type="number" id="itemPrice" placeholder="نرخ (KOR)" style="margin-bottom:20px">
+                <input type="text" id="itemLocation" placeholder="شوێن" style="margin-bottom:20px">
+                <button onclick="saveNewItem()" style="background:#00ff88; color:black; margin-bottom:10px">پاشەکەوتکردن</button>
+                <button onclick="closeModal()" style="background:#ff4444; color:white">داخستن</button>
+            </div>
         </div>
 
         <div id="homePage" class="content">
@@ -130,10 +216,35 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script>
+        // Data
         let currentUser = null;
         let userCoins = 0;
         const OWNER_CODE = "king123";
+        let isOwner = false;
+        
+        let shopItems = {
+            cars: [
+                { id: 1, name: "Infernus VIP", price: 800, location: "شوێن یاری" },
+                { id: 2, name: "Turismo VIP", price: 600, location: "شوێن یاری" }
+            ],
+            houses: [
+                { id: 1, name: "کۆشکی شاهانە", price: 2000, location: "شەقامی ڤاین وود" },
+                { id: 2, name: "ڤێلای شاهانە", price: 1200, location: "ناوچەی ڕیچمان" }
+            ]
+        };
 
+        let codes = [
+            { code: "ROYAL100", coins: 100, used: false },
+            { code: "VIP200", coins: 200, used: false }
+        ];
+
+        let users = [
+            { id: 1, username: "Kak_NeYmAr_Pc", coins: 0, role: "owner" },
+            { id: 2, username: "Royal_VIP", coins: 0, role: "admin" },
+            { id: 3, username: "Royal_Player", coins: 0, role: "user" }
+        ];
+
+        // Login Function
         function login() {
             let user = document.getElementById('username').value;
             if(!user) { alert('ناو بنوسە'); return; }
@@ -145,12 +256,19 @@
             document.getElementById('userCoins').innerText = userCoins;
             document.getElementById('homeCoins').innerText = userCoins;
             updateShop();
+            
+            if(isOwner) {
+                document.getElementById('ownerPanel').style.display = 'block';
+                updateOwnerLists();
+            }
         }
 
         function logout() {
             currentUser = null;
+            isOwner = false;
             document.getElementById('loginPage').style.display = 'block';
             document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('ownerPanel').style.display = 'none';
         }
 
         function showPage(page) {
@@ -164,51 +282,220 @@
             document.getElementById('codePage').style.display = page==='code'?'block':'none';
         }
 
+        // Shop Functions
         function updateShop() {
             let html = `
-                <div class="shop-category"><h3>🚗 سەیارەکان</h3>
-                    <div class="shop-item"><h4>Infernus VIP</h4><div class="price">💰 800 KOR</div><button class="buy-btn" onclick="buy('Infernus',800)">کڕین</button></div>
-                    <div class="shop-item"><h4>Turismo VIP</h4><div class="price">💰 600 KOR</div><button class="buy-btn" onclick="buy('Turismo',600)">کڕین</button></div>
-                </div>
-                <div class="shop-category"><h3>🏠 خانووەکان</h3>
-                    <div class="shop-item"><h4>کۆشکی شاهانە</h4><div class="price">💰 2000 KOR</div><button class="buy-btn" onclick="buy('کۆشک',2000)">کڕین</button></div>
-                    <div class="shop-item"><h4>ڤێلای شاهانە</h4><div class="price">💰 1200 KOR</div><button class="buy-btn" onclick="buy('ڤێلا',1200)">کڕین</button></div>
+                <div class="shop-category"><h3>🚗 سەیارەکان</h3>`;
+            shopItems.cars.forEach(item => {
+                html += `<div class="shop-item">
+                    <h4>${item.name}</h4>
+                    <div class="location">📍 ${item.location}</div>
+                    <div class="price">💰 ${item.price} KOR</div>
+                    <button class="buy-btn" onclick="buy('cars',${item.id})">کڕین</button>
                 </div>`;
+            });
+            html += `</div><div class="shop-category"><h3>🏠 خانووەکان</h3>`;
+            shopItems.houses.forEach(item => {
+                html += `<div class="shop-item">
+                    <h4>${item.name}</h4>
+                    <div class="location">📍 ${item.location}</div>
+                    <div class="price">💰 ${item.price} KOR</div>
+                    <button class="buy-btn" onclick="buy('houses',${item.id})">کڕین</button>
+                </div>`;
+            });
+            html += `</div>`;
             document.getElementById('shopItems').innerHTML = html;
         }
 
-        function buy(name,price) {
-            if(userCoins<price) { alert('KOR بەس نیە'); return; }
-            userCoins -= price;
-            document.getElementById('userCoins').innerText = userCoins;
-            document.getElementById('homeCoins').innerText = userCoins;
-            alert(`✅ ${name} کڕدرا!`);
+        function buy(category, id) {
+            let item = shopItems[category].find(i => i.id === id);
+            if(userCoins < item.price) { alert('KOR بەس نیە'); return; }
+            userCoins -= item.price;
+            updateCoins();
+            alert(`✅ ${item.name} کڕدرا!`);
         }
 
+        function updateCoins() {
+            document.getElementById('userCoins').innerText = userCoins;
+            document.getElementById('homeCoins').innerText = userCoins;
+        }
+
+        // Transfer Function
         function transfer() {
             let to = document.getElementById('transferTo').value;
             let amount = parseInt(document.getElementById('transferAmount').value);
             if(!to || !amount) { alert('زانیاری بنوسە'); return; }
             if(amount>userCoins) { alert('KOR بەس نیە'); return; }
             userCoins -= amount;
-            document.getElementById('userCoins').innerText = userCoins;
-            document.getElementById('homeCoins').innerText = userCoins;
+            updateCoins();
             alert(`✅ ${amount} KOR نێردرا بۆ ${to}`);
         }
 
+        // Code Functions
         function redeemCode() {
             let code = document.getElementById('codeInput').value;
-            if(code==='ROYAL100') { userCoins+=100; alert('✅ 100 KOR زیاد کرا'); }
-            else if(code==='VIP200') { userCoins+=200; alert('✅ 200 KOR زیاد کرا'); }
-            else { alert('❌ کۆد نادروستە'); return; }
-            document.getElementById('userCoins').innerText = userCoins;
-            document.getElementById('homeCoins').innerText = userCoins;
+            let found = codes.find(c => c.code === code && !c.used);
+            if(found) {
+                found.used = true;
+                userCoins += found.coins;
+                updateCoins();
+                alert(`✅ ${found.coins} KOR زیاد کرا`);
+                updateCodesList();
+            } else {
+                alert('❌ کۆد نادروستە یان بەکارهاتووە');
+            }
         }
 
+        // Owner Functions
         function showOwnerLogin() {
             let code = prompt('کۆدی خاوەن:');
-            if(code===OWNER_CODE) alert('👑 بەخێربێیت خاوەن!');
-            else alert('❌ کۆد هەڵەیە');
+            if(code === OWNER_CODE) {
+                isOwner = true;
+                alert('👑 بەخێربێیت خاوەن!');
+                if(currentUser) {
+                    document.getElementById('ownerPanel').style.display = 'block';
+                    updateOwnerLists();
+                    updateCodesList();
+                    updateUsersList();
+                }
+            } else {
+                alert('❌ کۆد هەڵەیە');
+            }
+        }
+
+        function switchOwnerTab(tab) {
+            document.querySelectorAll('.owner-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('ownerItemsTab').style.display = tab === 'items' ? 'block' : 'none';
+            document.getElementById('ownerCodesTab').style.display = tab === 'codes' ? 'block' : 'none';
+            document.getElementById('ownerUsersTab').style.display = tab === 'users' ? 'block' : 'none';
+        }
+
+        function showAddItemModal() {
+            document.getElementById('itemModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('itemModal').style.display = 'none';
+        }
+
+        function saveNewItem() {
+            let type = document.getElementById('itemType').value;
+            let name = document.getElementById('itemName').value;
+            let price = parseInt(document.getElementById('itemPrice').value);
+            let location = document.getElementById('itemLocation').value;
+
+            if(!name || !price) { alert('ناو و نرخ بنوسە'); return; }
+
+            let newId = shopItems[type].length > 0 ? Math.max(...shopItems[type].map(i => i.id)) + 1 : 1;
+            
+            shopItems[type].push({
+                id: newId,
+                name: name,
+                price: price,
+                location: location || 'شوێن دیاری نەکراوە'
+            });
+
+            closeModal();
+            updateOwnerLists();
+            updateShop();
+            alert('✅ کەلوپەل زیاد کرا');
+        }
+
+        function deleteItem(type, id) {
+            if(confirm('دڵنیایت؟')) {
+                let index = shopItems[type].findIndex(i => i.id === id);
+                if(index !== -1) {
+                    shopItems[type].splice(index, 1);
+                    updateOwnerLists();
+                    updateShop();
+                }
+            }
+        }
+
+        function updateOwnerLists() {
+            let carsHtml = '';
+            shopItems.cars.forEach(item => {
+                carsHtml += `<div class="item-row">
+                    <span>${item.name} - ${item.price} KOR</span>
+                    <div class="item-actions">
+                        <button class="delete-btn" onclick="deleteItem('cars',${item.id})">🗑️</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('carsList').innerHTML = carsHtml || '<div>هیچ کەلوپەلێک نیە</div>';
+
+            let housesHtml = '';
+            shopItems.houses.forEach(item => {
+                housesHtml += `<div class="item-row">
+                    <span>${item.name} - ${item.price} KOR</span>
+                    <div class="item-actions">
+                        <button class="delete-btn" onclick="deleteItem('houses',${item.id})">🗑️</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('housesList').innerHTML = housesHtml || '<div>هیچ کەلوپەلێک نیە</div>';
+        }
+
+        function addNewCode() {
+            let code = document.getElementById('newCode').value;
+            let coins = parseInt(document.getElementById('codeValue').value);
+            
+            if(!code || !coins) { alert('کۆد و بڕی KOR بنوسە'); return; }
+            
+            codes.push({
+                code: code,
+                coins: coins,
+                used: false
+            });
+            
+            document.getElementById('newCode').value = '';
+            document.getElementById('codeValue').value = '';
+            updateCodesList();
+            alert('✅ کۆد زیاد کرا');
+        }
+
+        function updateCodesList() {
+            let html = '';
+            codes.forEach(c => {
+                html += `<div class="item-row">
+                    <span>${c.code} - ${c.coins} KOR</span>
+                    <span style="color:${c.used ? '#ff4444' : '#00ff88'}">${c.used ? 'بەکارهاتووە' : 'بەکارنەهاتووە'}</span>
+                </div>`;
+            });
+            document.getElementById('codesList').innerHTML = html || '<div>هیچ کۆدێک نیە</div>';
+        }
+
+        function updateUsersList() {
+            let html = '';
+            users.forEach(u => {
+                html += `<div class="item-row">
+                    <span>${u.username}</span>
+                    <span>💰 ${u.coins} KOR</span>
+                    <span>${u.role === 'owner' ? '👑' : u.role === 'admin' ? '🛡️' : '👤'}</span>
+                </div>`;
+            });
+            document.getElementById('usersList').innerHTML = html;
+        }
+
+        function giveCoins() {
+            let username = document.getElementById('giveUser').value;
+            let amount = parseInt(document.getElementById('giveAmount').value);
+            
+            if(!username || !amount) { alert('ناو و بڕی KOR بنوسە'); return; }
+            
+            let user = users.find(u => u.username === username);
+            if(user) {
+                user.coins += amount;
+                if(username === currentUser) {
+                    userCoins += amount;
+                    updateCoins();
+                }
+                updateUsersList();
+                alert(`✅ ${amount} KOR درا بە ${username}`);
+            } else {
+                alert('بەکارهێنەر نەدۆزرایەوە');
+            }
         }
     </script>
 </body>
