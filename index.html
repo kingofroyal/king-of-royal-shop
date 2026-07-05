@@ -1,491 +1,469 @@
 <!DOCTYPE html>
-<html lang="ckb" dir="rtl">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>🌍 Kurd Unity | ئێس ئەی ئێم پی شۆپ</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* ==============================================
-           گڵۆبال دیزاین - زۆر جوان و مۆدێرن
-        ============================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #ffd966;
-            --primary-dark: #e6b800;
-            --primary-glow: rgba(255, 217, 102, 0.4);
-            --secondary: #00e6b8;
-            --secondary-glow: rgba(0, 230, 184, 0.3);
-            --accent: #ff6b6b;
-            --dark: #0b0f1c;
-            --darker: #070a14;
-            --card-bg: rgba(18, 25, 45, 0.85);
-            --glass-edge: rgba(255, 255, 255, 0.08);
-            --text: #f0f3fa;
-            --text-muted: #9aa4bf;
-            --border-glow: rgba(255, 217, 102, 0.25);
-            --shadow-xl: 0 25px 45px -12px rgba(0, 0, 0, 0.5);
-            --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.3);
-            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        body {
-            background: radial-gradient(circle at 10% 20%, #0a0e1a, #02040c);
-            color: var(--text);
-            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            min-height: 100vh;
-            padding: 25px 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* ئەنیمەیشنی پاشخانی جوڵاو */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
-        }
-        .animated-bg .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.35;
-            animation: floatOrb 18s infinite alternate ease-in-out;
-        }
-        .orb1 { width: 50vw; height: 50vw; background: #2a2f5c; top: -20vh; left: -20vw; }
-        .orb2 { width: 60vw; height: 60vw; background: #1f3a4b; bottom: -30vh; right: -20vw; animation-duration: 25s; }
-        .orb3 { width: 40vw; height: 40vw; background: #2d1f4a; top: 40vh; left: 30vw; animation-duration: 20s; opacity: 0.25; }
-        @keyframes floatOrb {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(5%, 5%) scale(1.1); }
-        }
-
-        /* ===== گڵۆسی سەرەوە (دێڤلۆپەر) ===== */
-        .dev-signature {
-            position: fixed;
-            top: 18px;
-            right: 25px;
-            background: rgba(10, 14, 26, 0.7);
-            backdrop-filter: blur(12px);
-            padding: 6px 20px;
-            border-radius: 60px;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            z-index: 9999;
-            font-family: monospace;
-            box-shadow: 0 0 12px var(--primary-glow);
-            transition: var(--transition-smooth);
-        }
-        .dev-signature i {
-            margin-left: 8px;
-            font-size: 0.9rem;
-        }
-        .dev-signature:hover {
-            background: var(--primary);
-            color: #0a0e1a;
-            border-color: white;
-            box-shadow: 0 0 22px var(--primary);
-        }
-
-        /* ===== نەرمەکاڵاکانی سەرەوە ===== */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* ناوەرگی سێرڤەر (گڵۆسی تایبەت) */
-        .server-bar {
-            background: var(--card-bg);
-            backdrop-filter: blur(14px);
-            border-radius: 70px;
-            padding: 12px 28px;
-            margin-bottom: 35px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            border: 1px solid var(--glass-edge);
-            box-shadow: var(--shadow-md);
-            transition: var(--transition-smooth);
-        }
-        .server-bar:hover {
-            border-color: var(--primary);
-            box-shadow: 0 8px 28px rgba(255, 217, 102, 0.2);
-        }
-        .server-ip {
-            background: rgba(0, 0, 0, 0.45);
-            padding: 8px 28px;
-            border-radius: 50px;
-            font-family: 'Fira Mono', monospace;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            letter-spacing: 1px;
-            backdrop-filter: blur(4px);
-        }
-        .server-status {
-            display: flex;
-            align-items: center;
-            gap: 22px;
-            flex-wrap: wrap;
-        }
-        .online-dot {
-            width: 12px;
-            height: 12px;
-            background: var(--secondary);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--secondary);
-            animation: pulse 1.8s infinite;
-        }
-        @keyframes pulse {
-            0% { opacity: 0.5; transform: scale(1); box-shadow: 0 0 0 0 var(--secondary); }
-            100% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 12px 4px var(--secondary); }
-        }
-        .players-count {
-            background: linear-gradient(135deg, #00e6b8, #00a88a);
-            color: #010101;
-            font-weight: bold;
-            padding: 5px 18px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            box-shadow: 0 2px 8px rgba(0,230,184,0.4);
-        }
-        .discord-link {
-            background: #5865f2;
-            color: white;
-            padding: 8px 24px;
-            border-radius: 40px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-            transition: var(--transition-smooth);
-            box-shadow: 0 4px 12px rgba(88,101,242,0.3);
-        }
-        .discord-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 24px #5865f270;
-            background: #4752c4;
-        }
-
-        /* سەرنووسە */
-        .main-header {
-            text-align: center;
-            margin: 15px 0 40px;
-        }
-        .main-header h1 {
-            font-size: 4.2rem;
-            font-weight: 800;
-            background: linear-gradient(125deg, #ffdd99, #ffb347, #ffcc66);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.2);
-            letter-spacing: -0.5px;
-        }
-        .main-header p {
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            margin-top: 6px;
-        }
-
-        /* بۆکسی چوونەژوورەوە - شووشەیی */
-        .login-box {
-            max-width: 470px;
-            margin: 0 auto 55px;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 48px;
-            padding: 42px 38px;
-            border: 1px solid rgba(255, 215, 120, 0.3);
-            box-shadow: var(--shadow-xl);
-            transition: 0.2s;
-        }
-        .login-box h2 {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 32px;
-            color: var(--primary);
-            font-weight: 700;
-        }
-        .input-group {
-            margin-bottom: 24px;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #ccd6f0;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 16px 22px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1.5px solid #2d3a5e;
-            border-radius: 44px;
-            color: white;
-            font-size: 1rem;
-            transition: 0.2s;
-            outline: none;
-        }
-        .input-group input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 16px var(--primary-glow);
-            background: rgba(0, 0, 0, 0.7);
-        }
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 60px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            background: linear-gradient(95deg, #ffd966, #f5b042);
-            color: #0b0e1a;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
-        }
-        .btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 28px rgba(255, 200, 80, 0.3);
-            background: linear-gradient(95deg, #ffe08c, #ffb347);
-        }
-
-        /* ===== مێنیوی سەرەکی (ناوەڕاست) ===== */
-        .main-nav {
-            background: rgba(12, 20, 35, 0.75);
-            backdrop-filter: blur(16px);
-            border-radius: 70px;
-            padding: 8px 20px;
-            margin-bottom: 42px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            border: 1px solid rgba(255,217,102,0.3);
-        }
-        .nav-item {
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            color: #eef2ff;
-            letter-spacing: 0.3px;
-        }
-        .nav-item:hover {
-            background: rgba(255, 217, 102, 0.2);
-            color: #ffeaac;
-        }
-        .nav-item.active {
-            background: var(--primary);
-            color: #0a0e1a;
-            box-shadow: 0 0 10px var(--primary);
-        }
-
-        /* کارتەکان و بەشەکان */
-        .home-page, .shopping-page, .rules-page, .tutorials-page, .balance-page, .code-page {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            border-radius: 38px;
-            padding: 32px 28px;
-            border: 1px solid rgba(255,215,0,0.2);
-            transition: var(--transition-smooth);
-        }
-        /* تێکست و خۆشکاری */
-        .welcome-banner {
-            background: linear-gradient(115deg, rgba(255, 217, 102, 0.18), rgba(255, 180, 70, 0.1));
-            border-radius: 32px;
-            padding: 28px;
-            margin-bottom: 30px;
-            border-right: 6px solid var(--primary);
-        }
-        .account-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 24px;
-            margin: 32px 0;
-        }
-        .info-card {
-            background: rgba(0, 0, 0, 0.35);
-            border-radius: 26px;
-            padding: 22px;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            border: 1px solid var(--glass-edge);
-            transition: 0.2s;
-        }
-        .info-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-6px);
-            background: rgba(0, 0, 0, 0.5);
-        }
-        .info-card i {
-            font-size: 2.4rem;
-            color: var(--primary);
-        }
-        .product-card, .shop-category, .tutorial-item, .owner-card {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 28px;
-            padding: 22px;
-            border: 1px solid rgba(255,215,0,0.2);
-            transition: all 0.25s;
-        }
-        .product-card:hover, .shop-item:hover {
-            transform: translateY(-6px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 30px -15px rgba(0,0,0,0.5);
-        }
-        .shop-item-image {
-            border-radius: 22px;
-            background: #141c2c;
-        }
-        .price {
-            font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--secondary);
-        }
-        .buy-btn {
-            background: linear-gradient(95deg, #00e6b8, #00b38a);
-            border: none;
-            border-radius: 50px;
-            padding: 12px;
-            font-weight: bold;
-            width: 100%;
-            transition: 0.2s;
-        }
-        /* پانێلی خاوەن */
-        .owner-panel {
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(16px);
-            border-radius: 42px;
-            margin-top: 35px;
-            border: 2px solid var(--primary);
-        }
-        .owner-tab {
-            background: #101826;
-            border: 1px solid #2d3a5e;
-        }
-        .owner-tab.active {
-            background: var(--primary);
-            color: #0a0e1a;
-        }
-        button.icon-btn {
-            background: #2a3a60;
-            border-radius: 60px;
-            width: 38px;
-            height: 38px;
-        }
-        /* ئەنیمەیشنی بڵق */
-        .owner-float {
-            background: radial-gradient(circle, #ffd966, #f5a623);
-            box-shadow: 0 0 35px #ffd966;
-            transition: 0.2s;
-        }
-        @media (max-width: 780px) {
-            .main-header h1 { font-size: 2.5rem; }
-            .server-bar { flex-direction: column; text-align: center; }
-            .dev-signature { top: 8px; right: 12px; font-size: 0.7rem; padding: 3px 12px; }
-            .login-box { padding: 28px 20px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>گەنجینە - سادە</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
+body{background:#0b1120;color:#e2e8f0;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:12px;}
+#box{background:#1e293b;border-radius:24px;padding:24px 18px;width:100%;max-width:480px;border:1px solid #334155;}
+h2{text-align:center;color:#38bdf8;margin-bottom:18px;font-size:24px;}
+input{width:100%;padding:12px 16px;margin-bottom:12px;background:#0f172a;border:1px solid #334155;border-radius:40px;color:#fff;font-size:15px;outline:none;}
+input:focus{border-color:#38bdf8;}
+button{width:100%;padding:12px;border:none;border-radius:40px;background:#38bdf8;color:#0f172a;font-weight:700;font-size:16px;cursor:pointer;transition:0.3s;}
+button:hover{background:#facc15;}
+.err{color:#f87171;background:#451a1a;padding:10px;border-radius:30px;text-align:center;margin-bottom:12px;font-size:14px;}
+.hidden{display:none !important;}
+.switch{text-align:center;margin-top:14px;color:#94a3b8;font-size:14px;}
+.switch span{color:#38bdf8;font-weight:600;cursor:pointer;}
+.panel{background:#1e293b;border-radius:16px;padding:14px;margin-top:14px;border:1px solid #334155;}
+.panel h3{color:#facc15;margin-bottom:10px;font-size:17px;}
+.panel table{width:100%;border-collapse:collapse;font-size:13px;}
+.panel th{text-align:right;padding:6px 4px;border-bottom:2px solid #334155;color:#94a3b8;}
+.panel td{padding:6px 4px;border-bottom:1px solid #1e293b;}
+.panel .btn-sm{border:none;padding:2px 10px;border-radius:30px;font-weight:700;cursor:pointer;font-size:11px;}
+.btn-owner{background:#facc15;color:#0f172a;}
+.btn-del{background:#ef4444;color:#fff;}
+.stats{display:flex;gap:8px;flex-wrap:wrap;background:#1e293b;padding:8px 14px;border-radius:40px;margin-bottom:14px;justify-content:space-around;font-size:13px;}
+.stats span{color:#fff;font-weight:700;}
+.flex-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.flex-row input{flex:1;min-width:80px;padding:8px 14px;border-radius:30px;background:#0f172a;border:1px solid #334155;color:#fff;outline:none;font-size:13px;margin-bottom:0;}
+.flex-row button{padding:8px 16px;border:none;border-radius:30px;font-weight:700;cursor:pointer;font-size:13px;width:auto;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:10px;}
+.card-item{background:#1e293b;border-radius:16px;padding:14px;border:1px solid #334155;text-align:center;}
+.card-item .icon{font-size:36px;margin-bottom:6px;}
+.card-item .title{font-weight:700;font-size:15px;}
+.card-item .ver{color:#94a3b8;font-size:12px;}
+.card-item .del{background:#ef4444;border:none;color:#fff;padding:2px 12px;border-radius:30px;cursor:pointer;font-size:12px;margin-top:6px;}
+</style>
 </head>
 <body>
-<div class="animated-bg">
-    <div class="orb orb1"></div>
-    <div class="orb orb2"></div>
-    <div class="orb orb3"></div>
+
+<div id="box">
+
+  <!-- ===== چوونەژوورەوە ===== -->
+  <div id="loginPage">
+    <h2>گەنجینەی سۆفت</h2>
+    <div id="err" class="err hidden"></div>
+    <input type="text" id="user" placeholder="ناوی بەکارهێنەر" value="admin">
+    <input type="password" id="pass" placeholder="وشەی نهێنی" value="1234">
+    <button id="loginBtn">چوونەژوورەوە</button>
+    <div class="switch">هەژمارت نییە؟ <span id="gotoReg">تۆمار بکە</span></div>
+  </div>
+
+  <!-- ===== تۆمارکردن ===== -->
+  <div id="registerPage" class="hidden">
+    <h2>تۆمارکردن</h2>
+    <div id="err2" class="err hidden"></div>
+    <input type="text" id="regUser" placeholder="ناوی بەکارهێنەر">
+    <input type="password" id="regPass" placeholder="وشەی نهێنی">
+    <button id="regBtn">تۆمارکردن</button>
+    <div class="switch">هەژمارت هەیە؟ <span id="gotoLog">بچۆ ژوورەوە</span></div>
+  </div>
+
+  <!-- ===== پەڕەی سەرەکی ===== -->
+  <div id="mainPage" class="hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+      <span style="font-size:20px;font-weight:800;color:#38bdf8;">گەنجینە</span>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <span style="background:#1e293b;padding:4px 14px;border-radius:30px;border:1px solid #334155;font-size:13px;" id="displayName">بەکارهێنەر</span>
+        <span style="background:#facc15;color:#0f172a;padding:2px 12px;border-radius:30px;font-weight:700;font-size:11px;" id="displayRole">user</span>
+        <button id="logoutBtn" style="background:transparent;border:1px solid #ef4444;color:#ef4444;padding:4px 14px;border-radius:30px;cursor:pointer;font-weight:600;font-size:13px;">دەرچوون</button>
+      </div>
+    </div>
+
+    <!-- ئامار -->
+    <div class="stats">
+      <div>کۆی بەکارهێنەران: <span id="totalUsers">0</span></div>
+      <div>چوونەژوورەوە: <span id="loggedIn">0</span></div>
+      <div>سەردان: <span id="visits">0</span></div>
+    </div>
+
+    <!-- پانێڵی خاوەن -->
+    <div id="ownerPanel" class="panel hidden">
+      <h3>پانێڵی بەڕێوەبردن</h3>
+      <div class="flex-row">
+        <input type="text" id="searchUser" placeholder="گەڕان بە ناو...">
+        <button id="searchBtn" style="background:#38bdf8;color:#0f172a;">گەڕان</button>
+      </div>
+      <div style="overflow-x:auto;margin-top:8px;">
+        <table>
+          <thead><tr><th>ناو</th><th>ڕۆڵ</th><th>ئایپ</th><th>کردار</th></tr></thead>
+          <tbody id="usersTable"></tbody>
+        </table>
+      </div>
+      <div class="flex-row" style="margin-top:10px;padding-top:10px;border-top:1px solid #334155;">
+        <input type="text" id="newUserName" placeholder="ناوی نوێ">
+        <input type="text" id="newUserPass" placeholder="وشەی نهێنی">
+        <button id="addUserBtn" style="background:#22c55e;color:#0f172a;">زیاد</button>
+      </div>
+    </div>
+
+    <!-- کارتەکان -->
+    <div style="margin-top:16px;font-size:17px;font-weight:700;border-right:4px solid #facc15;padding-right:10px;">پرۆگرامەکان</div>
+    <div id="cardGrid" class="card-grid"></div>
+
+    <!-- زیادکردنی کارت (تەنها خاوەن) -->
+    <div id="addCardArea" class="hidden" style="display:flex;flex-wrap:wrap;gap:6px;background:#1e293b;padding:10px 12px;border-radius:40px;margin-top:12px;border:1px solid #334155;">
+      <input type="text" id="newCardTitle" placeholder="ناوی پرۆگرام" style="flex:1;min-width:80px;padding:8px 14px;border-radius:30px;background:#0f172a;border:1px solid #334155;color:#fff;outline:none;font-size:13px;">
+      <input type="text" id="newCardVer" placeholder="وەشان" style="flex:0.5;min-width:60px;padding:8px 14px;border-radius:30px;background:#0f172a;border:1px solid #334155;color:#fff;outline:none;font-size:13px;">
+      <button id="addCardBtn" style="padding:8px 18px;border:none;border-radius:30px;background:#22c55e;color:#0f172a;font-weight:700;cursor:pointer;">زیاد</button>
+    </div>
+  </div>
 </div>
-<div class="dev-signature"><i class="fas fa-code"></i> Dev Kakarot - Adolf - Tola</div>
-<div class="container">
-    <div class="server-bar">
-        <div class="server-ip">🌐 188.165.192.24:8097</div>
-        <div class="server-status">
-            <span class="online-dot"></span><span>سێرڤەر ئۆنلاینە</span>
-            <span class="players-count">38/120</span>
-            <a href="https://discord.gg/t8QRYSjRE" target="_blank" class="discord-link"><i class="fab fa-discord"></i> دیسکۆرد</a>
-        </div>
-    </div>
-    <div class="main-header"><h1>🌍 Kurd Unity</h1><p>پلاتفۆرمی فرۆشتنی کەلوپەلی ڤیپ</p></div>
-    <div id="loginPage">
-        <div class="login-box">
-            <h2>🔐 داخڵبوون</h2>
-            <div class="input-group"><label>ناوی یاریکەر</label><input type="text" id="loginUsername" placeholder="ناوی ئەکاونتی سێرڤەر"></div>
-            <div class="input-group"><label>پاسۆرد</label><input type="password" id="loginPassword" placeholder="********"></div>
-            <button class="btn" onclick="login()"><i class="fas fa-sign-in-alt"></i> چوونە ژوورەوە</button>
-        </div>
-    </div>
-    <div id="mainContent" style="display:none;">
-        <div class="top-nav" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); border-radius: 70px; padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap:wrap;">
-            <div class="welcome-text"><i class="fas fa-crown"></i> <span id="welcomeUsername"></span></div>
-            <div class="balance"><i class="fas fa-coins"></i> <span>Kurp: <span id="userCoins">0</span></span></div>
-            <a href="#" class="logout-btn" style="background:#ff6b6b; padding:8px 22px; border-radius:50px; text-decoration:none;" onclick="logout()"><i class="fas fa-sign-out-alt"></i> دەرچوون</a>
-        </div>
-        <div class="main-nav"><div class="nav-item active" onclick="showPage('home')">سەرەکی</div><div class="nav-item" onclick="showPage('shopping')">شۆپینگ</div><div class="nav-item" onclick="showPage('rules')">یاساکان</div><div class="nav-item" onclick="showPage('tutorials')">ڕێنمایی</div><div class="nav-item" onclick="showPage('balance')">گواستنەوە</div><div class="nav-item" onclick="showPage('code')">کۆد</div></div>
-        <div id="pagesContainer">
-            <div id="homePage" class="home-page"><div class="welcome-banner"><h2>بەخێربێیت <span id="homeUsername"></span> !</h2><p>خۆزگە بە کڕینی کەلوپەلی ڤیپ</p></div>
-            <div class="account-info"><div class="info-card"><i class="fas fa-coins"></i><div><h4>Kurpەکانت</h4><p id="homeCoins">0 Kurp</p></div></div><div class="info-card"><i class="fas fa-home"></i><div><h4>خانووەکانت</h4><p>0</p></div></div><div class="info-card"><i class="fas fa-car"></i><div><h4>سەیارەکانت</h4><p>0</p></div></div><div class="info-card"><i class="fas fa-tshirt"></i><div><h4>سکینەکان</h4><p>0</p></div></div></div>
-            <div class="transfer-history" id="purchaseHistory"><div class="history-item">هێشتا هیچ کڕینێک نییە</div></div></div>
-            <div id="shoppingPage" style="display:none;" class="shopping-page"><h2 style="color:var(--primary);">🛒 کەلوپەلەکان</h2><div class="shop-categories" id="shopCategories"></div></div>
-            <div id="rulesPage" style="display:none;" class="rules-page"><ul class="rules-list"><li><i class="fas fa-check-circle"></i> ڕێزگرتن لە هەمووان</li><li><i class="fas fa-check-circle"></i> قەدەغەی چیت و هەک</li><li><i class="fas fa-check-circle"></i> پابەندبوون بە ڕۆڵپلەیی</li><li><i class="fas fa-check-circle"></i> ڕێز لە ئەدمین</li></ul></div>
-            <div id="tutorialsPage" style="display:none;" class="tutorials-page"><div class="tutorial-item"><h3>🔰 چۆن Kurp وەربگرین؟</h3><p>لە ڕێگای یاریکردن و کۆدەکان</p></div><div class="tutorial-item"><h3>🛍️ کڕین</h3><p>بڕۆ بەشی شۆپینگ و کلیک لە کڕین</p></div></div>
-            <div id="balancePage" style="display:none;" class="balance-page"><div class="transfer-form"><div class="tutorial-item"><h3>💸 گواستنەوەی Kurp</h3><div class="input-group"><label>ناوی بەکارهێنەر</label><input type="text" id="transferToUser"></div><div class="input-group"><label>بڕی Kurp</label><input type="number" id="transferAmount"></div><button class="btn btn-success" onclick="showTransferConfirm()">گواستنەوە</button></div><div id="transferHistory"></div></div></div>
-            <div id="codePage" style="display:none;" class="code-page"><div class="code-input-area"><textarea id="codeInput" placeholder="کۆدەکەت لێرە بنوسە..."></textarea><button class="btn btn-success" onclick="submitCode()">پشتڕاستکردنەوە</button><div id="redeemedCodes" style="margin-top:25px;"></div></div></div>
-        </div>
-        <div class="owner-panel" id="ownerPanel" style="display:none;"><h2><i class="fas fa-crown"></i> پانێلی خاوەن</h2><div class="owner-tabs"><div class="owner-tab active" onclick="switchOwnerTab('shop')">🛒 بەڕێوەبردنی شۆپ</div><div class="owner-tab" onclick="switchOwnerTab('codes')">🔑 کۆدەکان</div><div class="owner-tab" onclick="switchOwnerTab('users')">👥 بەکارهێنەران</div></div><div id="ownerShopTab"><button class="btn btn-success" style="width:auto;" onclick="showAddItemModal()">➕ زیادکردنی کەلوپەل</button><div class="owner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:25px; margin-top:25px;"><div class="owner-card"><h3>🚗 سەیارەکان</h3><div id="carsList"></div></div><div class="owner-card"><h3>🎨 سکینەکان</h3><div id="skinsList"></div></div></div></div><div id="ownerCodesTab" style="display:none;"><div class="owner-card"><h3>🔑 دروستکردنی کۆدی نوێ</h3><div class="input-group"><label>کۆد</label><input type="text" id="newCode"></div><div class="input-group"><label>بڕی Kurp</label><input type="number" id="codeCoins"></div><button class="btn btn-success" onclick="generateCode()">دروستکردن</button></div><div id="codesList" style="margin-top:20px;"></div></div><div id="ownerUsersTab" style="display:none;"><div id="usersList"></div></div></div>
-    </div>
-</div>
-<div class="owner-float" onclick="showOwnerModal()"><i class="fas fa-crown"></i></div>
+
 <script>
-    let currentUser = null, isOwner = false, userCoins = 0;
-    const OWNER_CODE = "king123";
-    let shopItems = { cars: [{id:1,name:"Infernus VIP",price:800,location:"شوێن یاری"},{id:2,name:"Turismo VIP",price:600,location:"شوێن یاری"}], skins: [{id:101,name:"سکینی ئەدمین",price:500,location:"جلوبەرگ"}] };
-    let codes = [{ code: "KURD100", coins: 100, used: false }];
-    let users = [{ username: "Kurd_Unity_Owner", role: "owner" }];
-    function login(){ let u=document.getElementById('loginUsername').value; if(!u){alert("ناو بنوسە");return;} currentUser=u; document.getElementById('loginPage').style.display='none'; document.getElementById('mainContent').style.display='block'; document.getElementById('welcomeUsername').innerText=u; document.getElementById('homeUsername').innerText=u; updateCoinsDisplay(); updateShopDisplay(); }
-    function logout(){ currentUser=null; document.getElementById('loginPage').style.display='block'; document.getElementById('mainContent').style.display='none'; document.getElementById('ownerPanel').style.display='none';}
-    function updateCoinsDisplay(){ document.getElementById('userCoins').innerText=userCoins; document.getElementById('homeCoins').innerText=userCoins+" Kurp"; }
-    function updateShopDisplay(){ let container=document.getElementById('shopCategories'); container.innerHTML=`<div class="shop-category"><h3>🚗 سەیارەکان</h3>${shopItems.cars.map(item=>`<div class="shop-item"><h4>${item.name}</h4><div class="price">💰 ${item.price} Kurp</div><button class="buy-btn" onclick="buyItem('cars',${item.id})">کڕین</button></div>`).join('')}</div><div class="shop-category"><h3>🎨 سکینەکان</h3>${shopItems.skins.map(item=>`<div class="shop-item"><h4>${item.name}</h4><div class="price">💰 ${item.price} Kurp</div><button class="buy-btn" onclick="buyItem('skins',${item.id})">کڕین</button></div>`).join('')}</div>`; }
-    function buyItem(cat,id){ let item=shopItems[cat].find(i=>i.id===id); if(userCoins>=item.price){ userCoins-=item.price; updateCoinsDisplay(); alert(`✅ ${item.name} کڕدرا!`); } else alert("کۆین بەس نییە"); }
-    function showPage(page){ document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active')); event.target.classList.add('active'); ['homePage','shoppingPage','rulesPage','tutorialsPage','balancePage','codePage'].forEach(p=>document.getElementById(p).style.display='none'); document.getElementById(page+'Page').style.display='block'; }
-    function showOwnerModal(){ document.getElementById('ownerModal')?null: (()=>{ let m=document.createElement('div'); m.className='modal'; m.id='ownerModal'; m.innerHTML=`<div class="modal-content"><div class="modal-header">👑 داخڵبوونی خاوەن</div><div class="input-group"><input type="password" id="ownerCode" placeholder="کۆد"></div><button class="btn btn-primary" onclick="verifyOwner()">داخڵبوون</button><button onclick="closeModal('ownerModal')">داخستن</button></div>`; document.body.appendChild(m); })(); document.getElementById('ownerModal').style.display='flex'; }
-    function closeModal(id){ document.getElementById(id).style.display='none'; }
-    function verifyOwner(){ let c=document.getElementById('ownerCode').value; if(c===OWNER_CODE){ isOwner=true; document.getElementById('ownerModal').style.display='none'; document.getElementById('ownerPanel').style.display='block'; updateOwnerLists(); } else alert("کۆد هەڵەیە"); }
-    function switchOwnerTab(tab){ document.querySelectorAll('.owner-tab').forEach(t=>t.classList.remove('active')); event.target.classList.add('active'); document.getElementById('ownerShopTab').style.display=tab==='shop'?'block':'none'; document.getElementById('ownerCodesTab').style.display=tab==='codes'?'block':'none'; document.getElementById('ownerUsersTab').style.display=tab==='users'?'block':'none'; if(tab==='shop') updateOwnerLists(); if(tab==='codes') updateCodesList(); if(tab==='users') updateUsersList(); }
-    function updateOwnerLists(){ document.getElementById('carsList').innerHTML=shopItems.cars.map(i=>`<div class="item-row"><div><strong>${i.name}</strong> ${i.price} Kurp</div><button class="icon-btn edit-btn" onclick="editItem('cars',${i.id})">✏️</button><button class="icon-btn delete-btn" onclick="deleteItem('cars',${i.id})">🗑️</button></div>`).join(''); document.getElementById('skinsList').innerHTML=shopItems.skins.map(i=>`<div class="item-row"><div><strong>${i.name}</strong> ${i.price} Kurp</div><button class="icon-btn edit-btn" onclick="editItem('skins',${i.id})">✏️</button><button class="icon-btn delete-btn" onclick="deleteItem('skins',${i.id})">🗑️</button></div>`).join(''); }
-    function showAddItemModal(){ let n=prompt("ناوی کەلوپەل"); let p=prompt("نرخ"); if(n&&p) shopItems.cars.push({id:Date.now(),name:n,price:parseInt(p),location:"شوێن"}); updateOwnerLists(); updateShopDisplay(); }
-    function editItem(cat,id){ let item=shopItems[cat].find(i=>i.id===id); let nn=prompt("ناوی نوێ",item.name); let np=prompt("نرخی نوێ",item.price); if(nn)item.name=nn; if(np)item.price=parseInt(np); updateOwnerLists(); updateShopDisplay(); }
-    function deleteItem(cat,id){ shopItems[cat]=shopItems[cat].filter(i=>i.id!==id); updateOwnerLists(); updateShopDisplay(); }
-    function generateCode(){ let cd=document.getElementById('newCode').value; let amt=parseInt(document.getElementById('codeCoins').value); if(cd&&amt){ codes.push({code:cd,coins:amt,used:false}); updateCodesList(); alert("کۆد دروست کرا"); } }
-    function updateCodesList(){ document.getElementById('codesList').innerHTML=codes.map(c=>`<div><strong>${c.code}</strong> - ${c.coins} Kurp ${c.used?"بەکارهاتوو":"چالاک"}</div>`).join(''); }
-    function updateUsersList(){ document.getElementById('usersList').innerHTML=users.map(u=>`<div>${u.username} - ${u.role}</div>`).join(''); }
-    function submitCode(){ let cd=document.getElementById('codeInput').value; let found=codes.find(c=>c.code===cd&&!c.used); if(found){ found.used=true; userCoins+=found.coins; updateCoinsDisplay(); alert(`${found.coins} Kurp زیاد کرا`); updateCodesList(); document.getElementById('codeInput').value=''; } else alert("کۆد نادروست یان بەکارهاتووە"); }
-    function showTransferConfirm(){ let to=document.getElementById('transferToUser').value; let amt=parseInt(document.getElementById('transferAmount').value); if(to&&amt>0&&amt<=userCoins){ userCoins-=amt; updateCoinsDisplay(); alert(`${amt} Kurp بۆ ${to} نێردرا`); } else alert("کۆین بەس نییە یان زانیاری هەڵەیە"); }
-    window.onclick=function(e){ if(e.target.classList.contains('modal')) e.target.style.display='none'; }
-    updateShopDisplay();
+// ======================== داتا ========================
+let DATA = {
+  users: [
+    { username: 'admin', password: '1234', role: 'owner', ip: '192.168.1.1', lastLogin: null }
+  ],
+  cards: [
+    { id: 1, title: 'Photoshop', version: '2025', desc: 'دیزاین', icon: 'fa-adobe' },
+    { id: 2, title: 'GTA V', version: '1.0', desc: 'یاری', icon: 'fa-gamepad' },
+    { id: 3, title: 'Office', version: '2024', desc: 'Word, Excel', icon: 'fa-file-word' }
+  ],
+  visits: 0,
+  lastDate: ''
+};
+
+let currentUser = null;
+
+try {
+  const saved = localStorage.getItem('my_simple_data');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    if (parsed.users && parsed.cards) DATA = parsed;
+  }
+} catch(e) {}
+
+function saveData() {
+  localStorage.setItem('my_simple_data', JSON.stringify(DATA));
+}
+
+// ======================== DOM ========================
+const loginPage = document.getElementById('loginPage');
+const registerPage = document.getElementById('registerPage');
+const mainPage = document.getElementById('mainPage');
+const err = document.getElementById('err');
+const err2 = document.getElementById('err2');
+const userInput = document.getElementById('user');
+const passInput = document.getElementById('pass');
+const loginBtn = document.getElementById('loginBtn');
+const regUser = document.getElementById('regUser');
+const regPass = document.getElementById('regPass');
+const regBtn = document.getElementById('regBtn');
+const gotoReg = document.getElementById('gotoReg');
+const gotoLog = document.getElementById('gotoLog');
+const logoutBtn = document.getElementById('logoutBtn');
+const displayName = document.getElementById('displayName');
+const displayRole = document.getElementById('displayRole');
+const totalUsers = document.getElementById('totalUsers');
+const loggedIn = document.getElementById('loggedIn');
+const visits = document.getElementById('visits');
+const ownerPanel = document.getElementById('ownerPanel');
+const usersTable = document.getElementById('usersTable');
+const searchUser = document.getElementById('searchUser');
+const searchBtn = document.getElementById('searchBtn');
+const newUserName = document.getElementById('newUserName');
+const newUserPass = document.getElementById('newUserPass');
+const addUserBtn = document.getElementById('addUserBtn');
+const cardGrid = document.getElementById('cardGrid');
+const addCardArea = document.getElementById('addCardArea');
+const newCardTitle = document.getElementById('newCardTitle');
+const newCardVer = document.getElementById('newCardVer');
+const addCardBtn = document.getElementById('addCardBtn');
+
+// ======================== فرمانەکان ========================
+function showErr(msg) {
+  err.textContent = msg;
+  err.classList.remove('hidden');
+  err2.classList.add('hidden');
+}
+function showErr2(msg) {
+  err2.textContent = msg;
+  err2.classList.remove('hidden');
+  err.classList.add('hidden');
+}
+function hideErr() {
+  err.classList.add('hidden');
+  err2.classList.add('hidden');
+}
+
+function updateStats() {
+  totalUsers.textContent = DATA.users.length;
+  const logged = DATA.users.filter(u => u.lastLogin !== null).length;
+  loggedIn.textContent = logged;
+  const today = new Date().toDateString();
+  if (DATA.lastDate !== today) {
+    DATA.visits = 1;
+    DATA.lastDate = today;
+  } else {
+    DATA.visits += 1;
+  }
+  visits.textContent = DATA.visits;
+  saveData();
+}
+
+function renderCards() {
+  cardGrid.innerHTML = '';
+  if (DATA.cards.length === 0) {
+    cardGrid.innerHTML = '<p style="color:#94a3b8;grid-column:1/-1;text-align:center;">هیچ پرۆگرامێک نییە.</p>';
+    return;
+  }
+  const isOwner = currentUser && currentUser.role === 'owner';
+  DATA.cards.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'card-item';
+    div.innerHTML = `
+      <div class="icon">📦</div>
+      <div class="title">${c.title}</div>
+      <div class="ver">${c.version || '—'}</div>
+      <div style="font-size:12px;color:#cbd5e1;margin:4px 0;">${c.desc || ''}</div>
+      ${isOwner ? `<button class="del" data-id="${c.id}">سڕینەوە</button>` : ''}
+    `;
+    cardGrid.appendChild(div);
+  });
+  document.querySelectorAll('.del').forEach(btn => {
+    btn.onclick = function() {
+      const id = parseInt(this.getAttribute('data-id'));
+      if (confirm('دڵنیای؟')) {
+        DATA.cards = DATA.cards.filter(c => c.id !== id);
+        saveData();
+        renderCards();
+      }
+    };
+  });
+}
+
+function renderOwnerPanel(filter = '') {
+  const isOwner = currentUser && currentUser.role === 'owner';
+  if (!isOwner) {
+    ownerPanel.classList.add('hidden');
+    addCardArea.classList.add('hidden');
+    return;
+  }
+  ownerPanel.classList.remove('hidden');
+  addCardArea.classList.remove('hidden');
+
+  let users = DATA.users;
+  const q = filter.trim().toLowerCase();
+  if (q) users = users.filter(u => u.username.toLowerCase().includes(q));
+
+  usersTable.innerHTML = '';
+  if (users.length === 0) {
+    usersTable.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#94a3b8;">هیچ بەکارهێنەرێک نەدۆزرایەوە.</td></tr>';
+    return;
+  }
+  users.forEach(u => {
+    const tr = document.createElement('tr');
+    const roleColor = u.role === 'owner' ? '#facc15' : '#38bdf8';
+    tr.innerHTML = `
+      <td>${u.username}</td>
+      <td><span style="background:${roleColor};color:#0f172a;padding:2px 12px;border-radius:30px;font-weight:700;font-size:11px;">${u.role}</span></td>
+      <td>${u.ip || '—'}</td>
+      <td>
+        ${u.role !== 'owner' ? `<button class="makeOwner" data-user="${u.username}" style="background:#facc15;border:none;padding:2px 12px;border-radius:30px;font-weight:700;cursor:pointer;font-size:11px;">خاوەن</button>` : ''}
+        <button class="delUser" data-user="${u.username}" style="background:#ef4444;border:none;padding:2px 12px;border-radius:30px;color:#fff;cursor:pointer;font-size:11px;">سڕینەوە</button>
+      </td>
+    `;
+    usersTable.appendChild(tr);
+  });
+
+  document.querySelectorAll('.makeOwner').forEach(btn => {
+    btn.onclick = function() {
+      const uname = this.getAttribute('data-user');
+      const user = DATA.users.find(u => u.username === uname);
+      if (user) {
+        user.role = 'owner';
+        saveData();
+        renderOwnerPanel(searchUser.value);
+        if (currentUser && currentUser.username === uname) {
+          currentUser.role = 'owner';
+          displayRole.textContent = 'owner';
+        }
+        updateStats();
+      }
+    };
+  });
+
+  document.querySelectorAll('.delUser').forEach(btn => {
+    btn.onclick = function() {
+      const uname = this.getAttribute('data-user');
+      if (currentUser && currentUser.username === uname) {
+        alert('ناتوانیت خۆت بسڕیتەوە.');
+        return;
+      }
+      if (confirm(`سڕینەوەی "${uname}"؟`)) {
+        DATA.users = DATA.users.filter(u => u.username !== uname);
+        saveData();
+        renderOwnerPanel(searchUser.value);
+        updateStats();
+      }
+    };
+  });
+}
+
+function refreshAll() {
+  updateStats();
+  renderCards();
+  renderOwnerPanel(searchUser.value);
+}
+
+// ======================== چوونەژوورەوە (وەرگرتنی ناو و وشەی نهێنی) ========================
+function doLogin(username, password) {
+  hideErr();
+  const user = DATA.users.find(u => u.username === username && u.password === password);
+  if (!user) {
+    showErr('ناو یان وشەی نهێنی هەڵەیە.');
+    return false;
+  }
+  user.lastLogin = new Date().toISOString();
+  user.ip = '192.168.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255);
+  saveData();
+
+  currentUser = { username: user.username, role: user.role };
+  sessionStorage.setItem('current_user', JSON.stringify(currentUser));
+
+  loginPage.classList.add('hidden');
+  registerPage.classList.add('hidden');
+  mainPage.classList.remove('hidden');
+
+  displayName.textContent = currentUser.username;
+  displayRole.textContent = currentUser.role;
+
+  refreshAll();
+  return true;
+}
+
+function doLogout() {
+  currentUser = null;
+  sessionStorage.removeItem('current_user');
+  loginPage.classList.remove('hidden');
+  registerPage.classList.add('hidden');
+  mainPage.classList.add('hidden');
+  userInput.value = 'admin';
+  passInput.value = '1234';
+  hideErr();
+}
+
+// ======================== ڕووداوەکان ========================
+loginBtn.onclick = function() {
+  const u = userInput.value.trim();
+  const p = passInput.value.trim();
+  if (!u || !p) { showErr('تکایە هەردوو خانە پڕ بکەوە.'); return; }
+  doLogin(u, p);
+};
+
+// تۆمارکردن: دوای زیادکردن، ڕاستەوخۆ بچۆ ژوورەوە
+regBtn.onclick = function() {
+  const u = regUser.value.trim();
+  const p = regPass.value.trim();
+  if (!u || !p) { showErr2('تکایە هەردوو خانە پڕ بکەوە.'); return; }
+  if (DATA.users.find(user => user.username === u)) {
+    showErr2('ئەم ناوە پێشتر هەیە.');
+    return;
+  }
+  // زیادکردنی بەکارهێنەری نوێ
+  DATA.users.push({
+    username: u,
+    password: p,
+    role: 'user',
+    ip: '192.168.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255),
+    lastLogin: null
+  });
+  saveData();
+  hideErr();
+
+  // ڕاستەوخۆ بە هەمان ناو و وشەی نهێنی بچۆ ژوورەوە
+  const success = doLogin(u, p);
+  if (success) {
+    // پاککردنەوەی خانەکانی تۆمارکردن
+    regUser.value = '';
+    regPass.value = '';
+  }
+};
+
+logoutBtn.onclick = doLogout;
+
+gotoReg.onclick = function() {
+  loginPage.classList.add('hidden');
+  registerPage.classList.remove('hidden');
+  hideErr();
+};
+gotoLog.onclick = function() {
+  registerPage.classList.add('hidden');
+  loginPage.classList.remove('hidden');
+  hideErr();
+};
+
+searchBtn.onclick = function() {
+  renderOwnerPanel(searchUser.value);
+};
+searchUser.onkeyup = function(e) {
+  if (e.key === 'Enter') renderOwnerPanel(searchUser.value);
+};
+
+addUserBtn.onclick = function() {
+  const uname = newUserName.value.trim();
+  const pass = newUserPass.value.trim();
+  if (!uname || !pass) { alert('تکایە ناو و وشەی نهێنی پڕ بکەوە.'); return; }
+  if (DATA.users.find(u => u.username === uname)) { alert('ئەم ناوە پێشتر هەیە.'); return; }
+  DATA.users.push({
+    username: uname,
+    password: pass,
+    role: 'user',
+    ip: '192.168.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255),
+    lastLogin: null
+  });
+  saveData();
+  newUserName.value = '';
+  newUserPass.value = '';
+  renderOwnerPanel(searchUser.value);
+  updateStats();
+  alert('بەکارهێنەر زیاد کرا!');
+};
+
+addCardBtn.onclick = function() {
+  const title = newCardTitle.value.trim();
+  if (!title) { alert('تکایە ناوی پرۆگرامەکە بنووسە.'); return; }
+  const newId = DATA.cards.length ? Math.max(...DATA.cards.map(c=>c.id)) + 1 : 1;
+  DATA.cards.push({
+    id: newId,
+    title: title,
+    version: newCardVer.value.trim() || '—',
+    desc: '',
+    icon: 'fa-cube'
+  });
+  saveData();
+  newCardTitle.value = '';
+  newCardVer.value = '';
+  renderCards();
+};
+
+// ======================== پشکنینی دۆخی ئێستا ========================
+const savedSession = sessionStorage.getItem('current_user');
+if (savedSession) {
+  try {
+    const tmp = JSON.parse(savedSession);
+    const exists = DATA.users.find(u => u.username === tmp.username);
+    if (exists) {
+      currentUser = tmp;
+      loginPage.classList.add('hidden');
+      registerPage.classList.add('hidden');
+      mainPage.classList.remove('hidden');
+      displayName.textContent = currentUser.username;
+      displayRole.textContent = currentUser.role;
+      refreshAll();
+    } else {
+      sessionStorage.removeItem('current_user');
+    }
+  } catch(e) {}
+}
+
+console.log('✅ ماڵپەڕەکە ئامادەیە. بە admin / 1234 بچۆ ژوورەوە.');
 </script>
+
 </body>
 </html>
